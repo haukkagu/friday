@@ -1,7 +1,11 @@
-#include "CalendarTable.h"
+#include "Terminal.h"
+#include "Commands/EchoCommand.h"
 
 int main() {
-	CalendarTable calendar(24, 28);
-	calendar.print();
-	return 0;
+  std::vector<CmdPtr> commands = { CmdPtr(new EchoCommand()) };
+
+  Terminal terminal(commands);
+  terminal.run();
+
+  return 0;
 }
