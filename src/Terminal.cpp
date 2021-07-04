@@ -11,7 +11,7 @@ Terminal::Terminal(const std::vector<CmdPtr>& commands) {
 void parse(std::string cmd, std::string& id, std::vector<std::string>& arguments);
 void Terminal::run() {
   std::string cmd;
-  while (cmd != "quit") {
+  while (this->context.running) {
     std::cout << "> ";
     std::getline(std::cin, cmd);
 
@@ -28,7 +28,7 @@ void Terminal::executeCommand(std::string id, std::vector<std::string> arguments
   if (it == commands.end()){
     std::cout << "The command '" << id << "' does not exist.\n";
   }else {
-    (*it).second.get()->execute(arguments);
+    (*it).second.get()->execute(arguments, this->context);
   }
 }
 

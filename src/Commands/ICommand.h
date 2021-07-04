@@ -1,4 +1,5 @@
 #pragma once
+#include "TerminalContext.h"
 
 #include <string>
 #include <vector>
@@ -12,5 +13,9 @@ public:
 
   inline std::string getId() { return id; }
 
-  virtual void execute(std::vector<std::string> arguments) = 0;
+  virtual void execute(const std::vector<std::string>& arguments, TerminalContext& context) = 0;
+protected:
+  std::string getNextArgument(std::vector<std::string>::const_iterator& it, std::vector<std::string>::const_iterator end);
+  std::vector<std::string> getRemainingArguments(std::vector<std::string>::const_iterator& it, std::vector<std::string>::const_iterator end);
+  void printInvalidArgument(std::string argument);
 };

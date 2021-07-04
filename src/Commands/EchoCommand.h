@@ -5,5 +5,5 @@ class EchoCommand : public ICommand {
 public:
   EchoCommand();
 
-  void execute (std::vector<std::string> arguments) override;
+  void execute(const std::vector<std::string>& arguments, TerminalContext& context) override;
 };
