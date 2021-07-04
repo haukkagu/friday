@@ -11,8 +11,8 @@ using CmdPtr = std::shared_ptr<ICommand>;
 
 class Terminal {
 private:
-  TerminalContext context;
-  std::map<std::string, CmdPtr> commands;
+  TerminalContext m_context;
+  std::map<std::string, CmdPtr> m_commands;
 
 public:
   Terminal(const std::vector<CmdPtr>& commands);

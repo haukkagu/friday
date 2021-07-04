@@ -5,8 +5,8 @@
 
 class CalendarTable : public Table {
 private:
-	int first_week;
-	int last_week;
+	int m_first_week;
+	int m_last_week;
 public:
 	CalendarTable(int first_week, int last_week);
 

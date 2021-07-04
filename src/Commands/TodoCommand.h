@@ -5,5 +5,5 @@ class TodoCommand : public ICommand {
 public:
   TodoCommand();
 
-  void execute(const std::vector<std::string>& arguments, TerminalContext& data) override;
+  void execute(const std::vector<std::string>& arguments, TerminalContext& context) override;
 };

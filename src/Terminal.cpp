@@ -4,31 +4,32 @@
 
 Terminal::Terminal(const std::vector<CmdPtr>& commands) {
   for (int i = 0; i < commands.size(); i++) {
-    this->commands.insert({(*commands[i].get()).getId(), commands[i]});
+    CmdPtr command = commands[i];
+    m_commands.insert({(*command.get()).getId(), command});
   }
 }
 
-void parse(std::string cmd, std::string& id, std::vector<std::string>& arguments);
+void parseToCommand(std::string cmd, std::string& id, std::vector<std::string>& arguments);
 void Terminal::run() {
   std::string cmd;
-  while (this->context.running) {
+  while (m_context.running) {
     std::cout << "> ";
     std::getline(std::cin, cmd);
 
     std::string id;
     std::vector<std::string> arguments;
-    parse(cmd, id, arguments);
+    parseToCommand(cmd, id, arguments);
 
     executeCommand(id, arguments);
   }
 }
 
 void Terminal::executeCommand(std::string id, std::vector<std::string> arguments) {
-  auto it = commands.find(id);
-  if (it == commands.end()){
+  auto it = m_commands.find(id);
+  if (it == m_commands.end()){
     std::cout << "The command '" << id << "' does not exist.\n";
   }else {
-    (*it).second.get()->execute(arguments, this->context);
+    (*it).second.get()->execute(arguments, m_context);
   }
 }
 
@@ -55,7 +56,7 @@ std::string getToken(std::string::iterator& it, std::string::iterator end) {
   return std::string(start, it);
 }
 
-void parse(std::string cmd, std::string& id, std::vector<std::string>& arguments) {
+void parseToCommand(std::string cmd, std::string& id, std::vector<std::string>& arguments) {
   auto it = cmd.begin();
 
   id = getToken(it, cmd.end());

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-ICommand::ICommand(std::string id) : id(id) { }
+ICommand::ICommand(std::string id) : m_id(id) { }
 
 std::string ICommand::getNextArgument(std::vector<std::string>::const_iterator& it, std::vector<std::string>::const_iterator end) {
   if (it == end) return "";

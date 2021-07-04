@@ -12,14 +12,14 @@ int weekCount(int first_week, int last_week) {
 	return week_count;
 }
 
-CalendarTable::CalendarTable(int first_week, int last_week) 
-	: Table(8, weekCount(first_week, last_week) + 1) , first_week(first_week), last_week(last_week) {
+CalendarTable::CalendarTable(int first_week, int last_week)
+	: Table(8, weekCount(first_week, last_week) + 1) , m_first_week(first_week), m_last_week(last_week) {
 
 	setRow({ "Week", "Monday", "Tuesday", "Wednesday", "Thursday",
 		"Friday", "Saturday", "Sunday" }, 0);
-	
+
 	// Set week number column
-	int weeks_left = row_count - 1;
+	int weeks_left = m_row_count - 1;
 
 	while (weeks_left--) {
 		int week = (first_week + weeks_left - 1) % 52 + 1;
@@ -29,7 +29,7 @@ CalendarTable::CalendarTable(int first_week, int last_week)
 
 void CalendarTable::setDay(std::string value, int week, int weekday) {
 	int column_index = weekday;
-	int row_index = week-first_week+1;
+	int row_index = weekCount(m_first_week, week);
 
 	setCell(value, column_index, row_index);
 }

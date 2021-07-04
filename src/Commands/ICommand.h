@@ -6,12 +6,12 @@
 
 class ICommand {
 private:
-  std::string id;
+  std::string m_id;
 public:
   ICommand(std::string id);
   virtual ~ICommand() = default;
 
-  inline std::string getId() { return id; }
+  inline std::string getId() { return m_id; }
 
   virtual void execute(const std::vector<std::string>& arguments, TerminalContext& context) = 0;
 protected:
