@@ -1,7 +1,16 @@
 workspace "friday"
 	architecture "x86_64"
 	configurations { "Debug", "Release" }
+	platforms { "Windows", "Linux" }
 	
+	filter { "platforms:Windows" }
+		system "Windows"
+		defines { "FRIDAY_WINDOWS" }
+	filter { "platforms:Linux" }
+		system "Linux"
+		defines { "FRIDAY_LINUX" }
+	filter {}
+
 	location "build"
 
 project "friday"
