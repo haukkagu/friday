@@ -1,8 +1,11 @@
 #include "Terminal.h"
+#include "Utils.h"
 
 #include <iostream>
 
 Terminal::Terminal(const std::vector<CmdPtr>& commands) {
+  m_context = setupContext();
+
   for (int i = 0; i < commands.size(); i++) {
     CmdPtr command = commands[i];
     m_commands.insert({(*command.get()).getId(), command});
