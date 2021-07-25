@@ -26,7 +26,7 @@ bool parseToInt(std::string str, int& out) {
   return true;
 }
 
-bool fileExists(std::string file_path) {
+bool fileExists(FRIDAY_PLATFORM_PATHSTR file_path) {
   std::ifstream infile(file_path);
   return infile.good();
 }
@@ -36,19 +36,35 @@ bool fileExists(std::string file_path) {
   #include <unistd.h>
   #include <linux/limits.h>
 #endif
+#ifdef FRIDAY_WINDOWS
+  #include <Windows.h>
+#endif
 
-const std::string& getDatabasePath() {
-  static std::string file_path;
-  if (file_path == "") {
+const FRIDAY_PLATFORM_PATHSTR& getDatabasePath() {
+  static FRIDAY_PLATFORM_PATHSTR file_path;
+  if (file_path.empty()) {
     #ifdef FRIDAY_LINUX
-      char result[PATH_MAX];
-      ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-      const char* path;
+      char exe_path[PATH_MAX];
+      ssize_t count = readlink("/proc/self/exe", exe_path, PATH_MAX);
+      const char* dir_path;
       if (count != -1) {
-          path = dirname(result);
+		dir_path = dirname(exe_path);
       }
-      file_path = std::string(path) + "/save.db";
-    #endif
+
+      file_path = std::string(dir_path) + "/save.db";
+    #elif FRIDAY_WINDOWS
+	  wchar_t raw_path[MAX_PATH];
+	  GetModuleFileName(NULL, raw_path, MAX_PATH);
+
+	  std::wstring dir_path;
+	  std::wstring exe_path = std::wstring(raw_path);
+	  size_t last_slash_id = exe_path.rfind('\\');
+	  if (std::string::npos != last_slash_id) {
+		  dir_path = exe_path.substr(0, last_slash_id);
+	  }
+
+	  file_path = dir_path + L"\\save.db";
+	#endif
   }
 
   return file_path;

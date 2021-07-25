@@ -1,20 +1,25 @@
+#include "Utils.h"
 #include "BinarySerializer.h"
 
-std::string toFileMode(BinarySerializer::Mode mode) {
+FRIDAY_PLATFORM_PATHSTR toFileMode(BinarySerializer::Mode mode) {
   switch(mode) {
     case BinarySerializer::Mode::Write:
-      return "wb";
+      return FRIDAY_PLATFORM_CCHARPTR("wb");
       break;
     case BinarySerializer::Mode::Read:
-      return "rb";
+      return FRIDAY_PLATFORM_CCHARPTR("rb");
       break;
   }
 
-  return "";
+  return FRIDAY_PLATFORM_CCHARPTR("");
 }
 
-BinarySerializer::BinarySerializer(std::string file_path, BinarySerializer::Mode mode) : m_closed(false), m_mode(mode) {
-  m_file = fopen(file_path.c_str(), toFileMode(mode).c_str());
+BinarySerializer::BinarySerializer(FRIDAY_PLATFORM_PATHSTR file_path, BinarySerializer::Mode mode) : m_closed(false), m_mode(mode) {
+  #ifdef FRIDAY_LINUX
+	m_file = fopen(file_path.c_str(), toFileMode(mode).c_str());
+  #elif FRIDAY_WINDOWS
+	m_file = _wfopen(file_path.c_str(), toFileMode(mode).c_str());
+  #endif
 
   if (m_file == nullptr) m_closed = true;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Utils.h"
 
 #include <cstdio>
 #include <vector>
@@ -12,7 +13,7 @@ private:
   Mode m_mode;
   bool m_closed;
 public:
-  BinarySerializer(std::string file_path, Mode mode);
+  BinarySerializer(FRIDAY_PLATFORM_PATHSTR file_path, Mode mode);
   ~BinarySerializer();
 
   inline bool isClosed() { return m_closed; }
@@ -75,3 +76,8 @@ private:
     }
   }
 };
+
+template<>
+void BinarySerializer::readElement(std::string& str);
+template<>
+void BinarySerializer::writeElement(const std::string& str);

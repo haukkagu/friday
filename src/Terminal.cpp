@@ -37,7 +37,7 @@ void Terminal::executeCommand(std::string id, std::vector<std::string> arguments
 }
 
 void eatWhitespace(std::string::iterator& it, std::string::iterator end) {
-  while (*it == ' ' && it != end) {
+  while (it != end && *it == ' ') {
     it++;
   }
 }
@@ -46,13 +46,13 @@ std::string getToken(std::string::iterator& it, std::string::iterator end) {
   eatWhitespace(it, end);
 
   char seperate_char = ' ';
-  if (*it == '"') {
+  if (it != end && *it == '"') {
     seperate_char = *it;
     it++;
   }
 
   auto start = it;
-  while (*it != seperate_char && it != end) {
+  while (it != end && *it != seperate_char) {
     it++;
   }
 
